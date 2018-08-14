@@ -91,6 +91,7 @@ class Hero:
     def _send(self):
         pass
 
+    @staticmethod
     def _receive(self):
         pass
 
