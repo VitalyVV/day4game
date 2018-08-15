@@ -19,7 +19,7 @@ class Hero:
     def attack(self, func, attack_type):
         """
         Perform checking of a function by following criteria:
-            Between every tuple of an array should be not more than 0.1 distance.
+            Between every tuple of an array should be not more than 0.5 distance.
 
         Check the array of function and attacking the monster.
         Raising Runtime Error if checking failed.
@@ -34,7 +34,7 @@ class Hero:
             arr = func()
             for i in range(len(arr)):
                 if i+1 < len(arr):
-                    if math.hypot(math.fabs(arr[i+1][0] - arr[i][0]),math.fabs(arr[i+1][1] - arr[i][1]))>0.1:
+                    if math.hypot(math.fabs(arr[i+1][0] - arr[i][0]),math.fabs(arr[i+1][1] - arr[i][1]))>0.5:
                         return False
             return True
 
