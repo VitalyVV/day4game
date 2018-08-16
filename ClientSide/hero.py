@@ -1,3 +1,4 @@
+from ClientSide.connection import send_data
 import math
 
 class Hero:
@@ -63,11 +64,12 @@ class Hero:
         prot = {'act': 'def'}
         if line is None:
             prot = {'line':[(1,2), (2,1)]}
-
         if _check_line(self.pos_x, self.pos_y, line):
             prot = {'line':line}
         else:
             raise RuntimeError('Wrong parameters')
+
+        self._send(prot)
 
     def move(self, x=1, y=1):
         """
@@ -86,8 +88,8 @@ class Hero:
     def _to_json(self):
         pass
 
-    def _send(self):
-        pass
+    def _send(self, dictionary):
+        send_data(dictionary)
 
     @staticmethod
     def _receive(self):

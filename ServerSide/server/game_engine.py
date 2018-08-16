@@ -1,4 +1,4 @@
-from Monster import Monster
+from ServerSide.server.monster import Monster
 import numpy
 import math
 
