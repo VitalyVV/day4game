@@ -1,8 +1,11 @@
-from Monster import Monster
+from monster import Monster
 import numpy
 import math
 
+
+
 class Field:
+
     def __init__(self):
         self.max_x = 100.0
         self.max_y = 100.0
