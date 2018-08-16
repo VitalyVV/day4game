@@ -14,8 +14,9 @@ class Hero:
         self.int = intelligence
         self.shield = ()
         self._enabled = True
+        self._to_server({'act':'intro', 'x':self.pos_x, 'y':self.pos_y,'id':self.name})
 
-    def attack(self, func, attack_type):
+    def attack(self, func):
         """
         Perform checking of a function by following criteria:
             Between every tuple of an array should be not more than 0.5 distance.
@@ -37,11 +38,13 @@ class Hero:
                         return False
             return True
 
-        attack = {'act':'att','type':attack_type}
+        attack = {'act':'atk'}
         if _check_func(func):
             attack['way'] = func()
         else:
             raise RuntimeError('Wrong function')
+
+        result = self._to_server(attack)
 
     def protect(self, line):
         """
@@ -61,15 +64,13 @@ class Hero:
         if not self._enabled:
             raise RuntimeError('You died')
 
-        prot = {'act': 'def'}
         if line is None:
-            prot = {'line':[(1,2), (2,1)]}
+            self.shield = [(1,2), (2,1)]
         if _check_line(self.pos_x, self.pos_y, line):
-            prot = {'line':line}
+            self.shield = line
         else:
             raise RuntimeError('Wrong parameters')
 
-        self._send(prot)
 
     def move(self, x=1, y=1):
         """
@@ -85,15 +86,13 @@ class Hero:
         else:
             raise RuntimeError('You died')
 
-    def _to_json(self):
-        pass
+    def print_data(self, result):
 
-    def _send(self, dictionary):
-        send_data(dictionary)
 
     @staticmethod
-    def _receive(self):
-        pass
+    def _to_server(dictionary):
+        return send_data(dictionary)
+
 
     def _die(self):
         self._enabled = False

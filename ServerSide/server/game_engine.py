@@ -8,4 +8,4 @@ class Field:
         self.max_y = 100.0
 
     def generate_monster(self):
-        return Monster().random_init()
+        return Monster()
