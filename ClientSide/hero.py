@@ -1,4 +1,4 @@
-from ClientSide.connection import send_data
+from ClientSide.client_socket import Connection
 import math
 
 class Hero:
@@ -13,6 +13,7 @@ class Hero:
         self.str = strength
         self.int = intelligence
         self.shield = ()
+        self.conn = Connection()
         self._enabled = True
 
     def attack(self, func, attack_type):
@@ -85,15 +86,13 @@ class Hero:
         else:
             raise RuntimeError('You died')
 
-    def _to_json(self):
-        pass
-
     def _send(self, dictionary):
-        send_data(dictionary)
+        self.conn.send_message(dictionary)
 
-    @staticmethod
     def _receive(self):
-        pass
+        self.conn.receive_message()
+
 
     def _die(self):
         self._enabled = False
+        self.conn.close()
