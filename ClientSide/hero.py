@@ -9,7 +9,6 @@ class Hero:
         self.pos_x = 1
         self.pos_y = 1
         self.hp = 100
-        self.mp =
         self.str = strength
         self.int = intelligence
         self.shield = ()
