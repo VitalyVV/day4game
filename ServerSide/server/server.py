@@ -1,6 +1,5 @@
-from flask import (Flask, jsonify)
+from flask import (Flask, jsonify, request, json)
 import json
-
 
 app = Flask(__name__)
 
@@ -14,4 +13,6 @@ def index():
 
 @app.route("/make_action", methods=["GET", "POST"])
 def fight():
+	print(request.args)
+	data = request.args
 	return jsonify({'dogs': 15}), 200
