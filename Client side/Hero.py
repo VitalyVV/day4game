@@ -2,15 +2,14 @@ import math
 
 class Hero:
 
-    def __init__(self, name, strength, intelligence, attribute):
+    def __init__(self, name, strength, intelligence):
         if strength + intelligence > 40:
             raise RuntimeError('You spent more points on strength({}) and intelligence({}) than possible.'.format(strength, intelligence))
         self.name = name
         self.pos_x = 1
         self.pos_y = 1
         self.hp = 100
-        self.mp = 100
-        self.attribute = attribute
+        self.mp =
         self.str = strength
         self.int = intelligence
         self.shield = ()
