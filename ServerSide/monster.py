@@ -16,6 +16,7 @@ class Monster:
         self.player_previous_turn = []
         self.player_similarity_count = 0
         self.enemy_pos = ()
+        self.first_turn = True
         self.random_init()
 
     def random_init(self):
@@ -119,19 +120,21 @@ class Monster:
 
     def get_monster_turn(self, dictionary):
         action = dictionary['act']
-        if len(self.player_previous_turn) <= 0:
-            self.get_protection(hero_pos=self.enemy_pos)
-        if action=='atk':
-            self.apply_human_attack(dictionary['way'], dictionary['dmg'])
-            if self.player_similarity_count >= 2:
-                return self.move(self.pos_x, self.pos_y)
+        if self.first_turn:
+            self.first_turn = False
+            return self.get_protection(hero_pos=self.enemy_pos)
+        else:
+            if action=='atk':
+                self.apply_human_attack(dictionary['way'], dictionary['dmg'])
+                if self.player_similarity_count >= 2:
+                    return self.move(self.pos_x, self.pos_y)
+                else:
+                    return self.get_attack(self.enemy_pos)
+            elif action == 'mov':
+                self.enemy_pos = (dictionary['x'], dictionary['y'])
+                return self.get_attack(self.enemy_pos)
             else:
                 return self.get_attack(self.enemy_pos)
-        elif action == 'mov':
-            self.enemy_pos = (dictionary['x'], dictionary['y'])
-            return self.get_attack(self.enemy_pos)
-        else:
-            return self.get_attack(self.enemy_pos)
 
 
     def move(self, x, y):
