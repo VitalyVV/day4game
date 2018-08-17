@@ -95,6 +95,9 @@ class Hero:
         :param y: y coordinate of destination
         :return:
         """
+
+        x = math.floor(x)
+        y = math.floor(y)
         if self._enabled:
             if x<=100 and y <=100:
                 while(self.pos_x != x or self.pos_y != y):
@@ -182,12 +185,26 @@ class Hero:
             self._send({'act': 'intro', 'x': self.pos_x, 'y': self.pos_y})
             return actions
 
+
         if actions['act'] == 'atk':
+            hp_now = self.hp
             self.apply_attack(actions['way'], actions['dmg'])
-            print('You receive a hit from {}. It deals {} damage and your hp now is '
+            if hp_now == self.hp:
+                print('Enemy missed you')
+            else:
+                print('You receive a hit from {}. It deals {} damage and your hp now is '
                   '{}.'.format(enemy, actions['dmg'], self.hp))
         elif actions['act'] == 'prt':
             print('Enemy put a protection barrier.')
+        elif actions['act'] == 'res':
+            hit = ''
+            if actions['hit']:
+                hit = 'hit'
+            else:
+                hit = 'miss'
+            print('You {} the {}. He has {} hp.\n'.format(hit, enemy, actions['hp']))
+            self._send({})
+            self._receive()
         elif actions['act'] == 'mov':
             print('Enemy had moved onto position ({}, {})'.format(actions['x'], actions['y']))
 

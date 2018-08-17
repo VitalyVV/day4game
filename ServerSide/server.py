@@ -4,12 +4,11 @@ from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from ServerSide.monster import Monster
 import _thread as thread
 import time
-import datetime
 import json
 
 
 
-host = '0.0.0.0'
+host = '10.90.131.245'
 port = 8080
 size = 4096 * 4
 
@@ -86,13 +85,21 @@ def solo_player(socket):
   monster.setup_opponent(json.loads(str(intro, 'utf-8')))
   user.registered = True
 
-  #Monster User interaction loop
+  #Monster-User interaction loop
   while True:
     socket.send(response.encode('utf-8'))
     time.sleep(1)
     response = socket.recv(size)
-    print(response)
-    response = json.dumps(monster.get_monster_turn(json.loads(str(response, 'utf-8'))))
+    dictionary = json.loads(str(response, 'utf-8'))
+    turn = {}
+    if dictionary['act'] == 'atk' and (not monster.first_turn):
+        turn, follow_up  = monster.get_monster_turn(dictionary)
+        socket.send(json.dumps(follow_up).encode('utf-8'))
+        socket.recv(size)
+    else:
+        turn = monster.get_monster_turn(dictionary)
+
+    response = json.dumps(turn)
     time.sleep(1)
 
 thread.start_new_thread(multiple_players, ())

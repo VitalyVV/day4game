@@ -7,13 +7,13 @@ class MyHero(Hero):
 
         while(self._enabled):
             #Write your code here
-            self.attack(self.attack_function)
-            self.protect([(1,2), (2,1)])
-            self.move(10, 10)
+            #Example for you
+            # Implement it in form of algorithm for better efficiency
+            # self.attack(self.attack_function)
+            # self.protect([(1,2), (2,1)])
+            # self.move(10, 10)
 
-
-            #until here
-            event = self._receive()
+            pass
             #You can add code here
 
 

@@ -2,7 +2,7 @@ from socket import socket, AF_INET, SOCK_STREAM, error
 import json
 import time
 
-host = "127.0.0.1"
+host = "10.90.131.245"
 port = 8080
 size = 4096 * 4
 
