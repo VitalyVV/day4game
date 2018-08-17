@@ -56,12 +56,14 @@ def start_game(user1, user2):
     if (not user1.registered):
       response += registration
       user1.registered = True
+
     s1.send(response.encode('utf-8'))
     response = s1.recv(size)
 
     if (not user2.registered):
-      response = registration + '\n###\n' + response
+      response = registration + '\n###\n' + str(response, 'utf-8')
       user2.registered = True
+
     s2.send(response.encode('utf-8'))
     response = s2.recv(size)
 

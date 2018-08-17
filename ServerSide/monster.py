@@ -168,7 +168,6 @@ class Monster:
         ys = [a * y ** 2 + b * y + c for y in xs]
         path = tuple(zip(xs,ys))
 
-        print(path)
         return {'act':'atk', 'way':path, 'dmg':self.damage}
 
 
