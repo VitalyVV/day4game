@@ -107,5 +107,7 @@ while True:
   except KeyboardInterrupt: # Ctrl+C # FIXME: vraci "raise error(EBADF, 'Bad file descriptor')"
     print ("Closing server socket...")
     serversocket.close()
+    break
   except Exception:
       serversocket.close()
+      break
