@@ -1,16 +1,16 @@
 #!/usr/bin/python
 
 from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
-from ServerSide.monster import Monster
+from monster import Monster
 import _thread as thread
 import time
 import json
 
 
 
-host = '10.90.131.245'
+host = '10.240.22.181'
 port = 8080
-size = 4096 * 4
+size = 4096 * 16
 
 addr = (host, port)
 

@@ -1,4 +1,4 @@
-from ClientSide.client_socket import Connection
+from client_socket import Connection
 import math
 
 class Hero:

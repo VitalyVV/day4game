@@ -3,7 +3,7 @@ import json
 import time
 
 port = 8080
-size = 4096 * 4
+size = 4096 * 16
 
 class Connection:
 	def create_connection(self):

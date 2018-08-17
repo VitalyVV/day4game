@@ -1,4 +1,4 @@
-from ClientSide.hero import Hero
+from hero import Hero
 
 
 class MyHero(Hero):
@@ -9,9 +9,9 @@ class MyHero(Hero):
             #Write your code here
             #Example for you
             # Implement it in form of algorithm for better efficiency
-            # self.attack(self.attack_function)
-            # self.protect([(1,2), (2,1)])
-            # self.move(10, 10)
+            self.attack(self.attack_function)
+            self.protect([(1,2), (2,1)])
+            self.move(10, 10)
 
             pass
             #You can add code here
@@ -35,7 +35,6 @@ def main():
     ta_ip = '127.0.0.1' # Update it, it will not work with local host
 
     #Change the calling to Suitable for you.
-    #You can't have Strength and Intelligence together be greater than 40 points
     hero = MyHero('yourname', ta_ip)
     #Your hero possesed 3 functions you may use:
     # attack(): given a trajectory performing long shot at the enemy or close range attack.
