@@ -31,9 +31,12 @@ class MyHero(Hero):
 
 
 def main():
+    #Set the value of TA' machine IP address. All of you have to be in one network
+    ta_ip = '127.0.0.1' # Update it, it will not work with local host
+
     #Change the calling to Suitable for you.
     #You can't have Strength and Intelligence together be greater than 40 points
-    hero = MyHero('yourname')
+    hero = MyHero('yourname', ta_ip)
     #Your hero possesed 3 functions you may use:
     # attack(): given a trajectory performing long shot at the enemy or close range attack.
     #         It all depends on what trajectory you build using attack_function()

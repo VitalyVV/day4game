@@ -3,14 +3,14 @@ import math
 
 class Hero:
 
-    def __init__(self, name):
+    def __init__(self, name, ip):
         self.name = name
         self.pos_x = 1
         self.pos_y = 1
         self.hp = 100
         self.damage = 20
         self.shield = [(1.1, 1),(1, 1.1)]
-        self.conn = Connection()
+        self.conn = Connection(ip)
         self._enabled = True
 
 

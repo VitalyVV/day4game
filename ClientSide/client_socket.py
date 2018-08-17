@@ -2,14 +2,13 @@ from socket import socket, AF_INET, SOCK_STREAM, error
 import json
 import time
 
-host = "10.90.131.245"
 port = 8080
 size = 4096 * 4
 
 class Connection:
 	def create_connection(self):
 		s = socket(AF_INET, SOCK_STREAM)
-		s.connect((host, port))
+		s.connect((self.ip, port))
 		return s
 
 	def send_message(self, content):
@@ -34,8 +33,9 @@ class Connection:
 			return self.receive_message()
 
 
-	def __init__(self, game_type='solo'):
+	def __init__(self, ip, game_type='solo'):
 		self.recursion_deep = 0
+		self.ip = ip
 		self.socket = self.create_connection()
 		self.game_type = game_type
 		self.register()
