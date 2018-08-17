@@ -9,13 +9,13 @@ class Hero:
         self.pos_y = 1
         self.hp = 100
         self.damage = 20
-        self.shield = ()
+        self.shield = [(1.1, 1),(1, 1.1)]
         self.conn = Connection()
         self._enabled = True
 
 
 
-    def attack(self, func, attack_type):
+    def attack(self, func):
         """
         Perform checking of a function by following criteria:
             Between every tuple of an array should be not more than 0.5 distance.
@@ -37,11 +37,15 @@ class Hero:
                         return False
             return True
 
-        attack = {'act':'att','type':attack_type}
+        attack = {'act':'atk'}
         if _check_func(func):
             attack['way'] = func()
+            attack['dmg'] = self.damage
         else:
             raise RuntimeError('Wrong function')
+
+        self._send(attack)
+        self._receive()
 
     def protect(self, line):
         """
@@ -63,22 +67,23 @@ class Hero:
 
         prot = {'act': 'def'}
         if line is None:
-            prot = {'line':[(1,2), (2,1)]}
+            prot['line'] = [(1,2), (2,1)]
         if _check_line(self.pos_x, self.pos_y, line):
-            prot = {'line':line}
+            prot['line'] = line
         else:
             raise RuntimeError('Wrong parameters')
 
         self._send(prot)
+        self._receive()
 
     def _get_step(self,x, y):
         if self.pos_x != x:
-            if self.pos_x < x:
+            if self.pos_x > x:
                 self.pos_x -= 1
             else:
                 self.pos_x += 1
         if self.pos_y != y:
-            if self.pos_y < y:
+            if self.pos_y > y:
                 self.pos_y -= 1
             else:
                 self.pos_y += 1
@@ -92,8 +97,8 @@ class Hero:
         """
         if self._enabled:
             if x<=100 and y <=100:
-                self._get_step(x,y)
                 while(self.pos_x != x or self.pos_y != y):
+                    self._get_step(x, y)
                     move = {'act':'mov', 'x':self.pos_x, 'y':self.pos_y}
                     self._send(move)
                     self._receive()
@@ -105,12 +110,17 @@ class Hero:
         self.conn.send_message(dictionary)
 
     def apply_attack(self, path, dmg):
+        reduced = False
         for x in range(1, len(path)):
             if self.check_intersection(self.shield[0][0], self.shield[0][1], self.shield[1][0], self.shield[1][1],
-                                    path[x-1][0], path[x-1][1], path[x][0], path[x][1]):
-                dmg = self.reduce_damage(dmg)
+                                       path[x - 1][0], path[x - 1][1], path[x][0], path[x][1]):
+                if not reduced:
+                    dmg = self.reduce_damage(dmg)
+
+            if math.floor(path[x-1][0]) == self.pos_x and math.floor(path[x-1][1]) == self.pos_y:
+                self.hp -= dmg
                 break
-        self.hp -= dmg
+
         if self.hp <= 0:
             self._die()
 

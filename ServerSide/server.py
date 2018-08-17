@@ -86,14 +86,11 @@ def solo_player(socket):
 
   #Monster User interaction loop
   while True:
-    if not user.registered:
-      response += json.dumps(registration)
-      user.registered = True
-
     socket.send(response.encode('utf-8'))
-    response = socket.recv(size)
     time.sleep(1)
-    response = json.dumps(monster.get_player_turn(json.loads(str(response, 'utf-8'))))
+    response = socket.recv(size)
+    print(response)
+    response = json.dumps(monster.get_monster_turn(json.loads(str(response, 'utf-8'))))
     time.sleep(1)
 
 thread.start_new_thread(multiple_players, ())

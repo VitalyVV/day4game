@@ -98,12 +98,17 @@ class Monster:
 
             return True
 
+        reduced = False
         for x in range(1, len(path)):
             if self.check_intersection(self.shield[0][0], self.shield[0][1], self.shield[1][0], self.shield[1][1],
                                     path[x-1][0], path[x-1][1], path[x][0], path[x][1]):
-                dmg = self.reduce_damage(dmg)
+                if not reduced:
+                    dmg = self.reduce_damage(dmg)
+
+            if math.floor(path[x-1][0]) == self.pos_x and math.floor(path[x-1][1]) == self.pos_y:
+                self.hp -= dmg
                 break
-        self.hp -= dmg
+
         if self.hp <= 0:
             self.die()
 
@@ -112,19 +117,21 @@ class Monster:
 
         self.player_previous_turn = path
 
-    def get_player_turn(self, dictionary):
+    def get_monster_turn(self, dictionary):
         action = dictionary['act']
         if len(self.player_previous_turn) <= 0:
             self.get_protection(hero_pos=self.enemy_pos)
         if action=='atk':
             self.apply_human_attack(dictionary['way'], dictionary['dmg'])
             if self.player_similarity_count >= 2:
-                self.move(self.pos_x, self.pos_y)
-            elif action['act'] == 'mov':
-                self.enemy_pos = (action['x'], action['y'])
-                self.get_attack(self.enemy_pos)
+                return self.move(self.pos_x, self.pos_y)
+            else:
+                return self.get_attack(self.enemy_pos)
+        elif action == 'mov':
+            self.enemy_pos = (dictionary['x'], dictionary['y'])
+            return self.get_attack(self.enemy_pos)
         else:
-            self.get_attack(self.enemy_pos)
+            return self.get_attack(self.enemy_pos)
 
 
     def move(self, x, y):
@@ -161,6 +168,7 @@ class Monster:
         ys = [a * y ** 2 + b * y + c for y in xs]
         path = tuple(zip(xs,ys))
 
+        print(path)
         return {'act':'atk', 'way':path, 'dmg':self.damage}
 
 

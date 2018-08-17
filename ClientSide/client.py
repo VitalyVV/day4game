@@ -7,8 +7,9 @@ class MyHero(Hero):
 
         while(self._enabled):
             #Write your code here
-
-
+            self.attack(self.attack_function)
+            self.protect([(1,2), (2,1)])
+            self.move(10, 10)
 
 
             #until here
@@ -25,8 +26,7 @@ class MyHero(Hero):
         #Write your code here
 
 
-
-        pass  # Remove this if you don't need it
+        return []  # Remove this if you don't need it
 
 
 
