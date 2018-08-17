@@ -1,10 +1,13 @@
 #!/usr/bin/python
 
 from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
+from ServerSide.monster import Monster
 import _thread as thread
 import time
 import datetime
 import json
+
+
 
 host = '0.0.0.0'
 port = 8080
@@ -29,7 +32,7 @@ class User:
 
 def handler(clientsocket, clientaddr):
   print("Accepted connection from: {}".format(clientaddr))
-  data = clientsocket.recv(1024)
+  data = clientsocket.recv(size)
   data = json.loads(data)
 
   print(type(data))
@@ -71,21 +74,22 @@ def multiple_players():
 
 def solo_player(socket):
   user = User(socket)
-  # monster = Monster()
-  registration = "You will be playing against AI monster.\nMake your action.\n"
+  monster = Monster()
+  registration = {'act':'intro', 'msg':"You will be playing against AI monster.\nMake your action.\n" + monster.introduce_yourself(),
+                  'x':monster.pos_x, 'y':monster.pos_y}
   response = ''
+  intro = socket.recv(size)
+  monster.setup_opponent(intro)
 
   #Monster User interaction loop
   while True:
-    info = {}
     if not user.registered:
-      response += registration
+      response += json.dumps(registration)
       user.registered = True
 
     socket.send(response)
     response = socket.recv(size)
-    # response = monster.act(response) # todo: me
-    response = "I obey you"
+    response = json.dumps(monster.get_player_turn(json.loads(response)))
     time.sleep(1)
 
 thread.start_new_thread(multiple_players, ())
@@ -100,3 +104,5 @@ while True:
   except KeyboardInterrupt: # Ctrl+C # FIXME: vraci "raise error(EBADF, 'Bad file descriptor')"
     print ("Closing server socket...")
     serversocket.close()
+  except Exception:
+      serversocket.close()

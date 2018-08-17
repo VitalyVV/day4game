@@ -10,8 +10,9 @@ class MyHero(Hero):
 
 
             #until here
-            #This should be the last line of your program
-            self._receive()
+            event = self._receive()
+            #You can add code here
+
 
     def attack_function(self):
         """
@@ -30,7 +31,7 @@ class MyHero(Hero):
 def main():
     #Change the calling to Suitable for you.
     #You can't have Strength and Intelligence together be greater than 40 points
-    hero = MyHero('yourname', strength=1, intelligence=1)
+    hero = MyHero('yourname')
     #Your hero possesed 3 functions you may use:
     # attack(): given a trajectory performing long shot at the enemy or close range attack.
     #         It all depends on what trajectory you build using attack_function()
@@ -38,7 +39,7 @@ def main():
     #         given the length of your line. Line of length 0.1 will reduce 90% of damage,
     #         however line of length more than 1.1 will reduce only 5% of damage.
     # move(): Make your hero to move to a certain point.
-    #
+    #       Be careful
     #
 
     hero.run()

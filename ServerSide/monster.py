@@ -10,7 +10,7 @@ class Monster:
         self.name = ''
         self.pos_x = 0
         self.pos_y = 0
-        self.hp = 100
+        self.hp = 150
         self.attribute = []
         self.shield = ()
         self.damage = 20
@@ -30,13 +30,12 @@ class Monster:
         self.shield = self.get_protection()
         if rd.random() <= 0.1:
             self.damage = rd.randint(20, 150)
+        if rd.random() <= 0.1:
+            self.hp += rd.randint(1, 3000)
 
     def introduce_yourself(self):
         print(f'Monster known as {self.name}. It stands at {(self.pos_x, self.pos_y)}.\nIt\'s hp is {self.hp}.')
-        print(f'Deals {self.damage} damage per hit.')
-
-    def get_description(self):
-        pass
+        print(f'Deals {self.damage} damage per hit.\n')
 
     def die(self):
         def _gen_prize():
@@ -114,14 +113,16 @@ class Monster:
 
         self.player_previous_turn = path
 
-
-
-    def get_player_turn(self, dict):
-        action = dict['act']
+    def get_player_turn(self, dictionary):
+        action = dictionary['act']
+        if len(self.player_previous_turn) <= 0:
+            self.get_protection(hero_pos=self.enemy_pos)
         if action=='atk':
+            self.apply_human_attack(dictionary['way'], dictionary['dmg'])
             if self.player_similarity_count >= 2:
                 self.move(self.pos_x, self.pos_y)
-            else:
+            elif action['act'] == 'mov':
+                self.enemy_pos = (action['x'], action['y'])
                 self.get_attack(self.enemy_pos)
         else:
             self.get_attack(self.enemy_pos)
@@ -130,7 +131,7 @@ class Monster:
     def move(self, x, y):
         self.pos_x = x
         self.pos_y = y
-        #TODO: Send to client
+        return {'act':'mov', 'x':x, 'y':y}
 
 
     def get_attack(self, hero_pos = (1,1)):
@@ -157,18 +158,15 @@ class Monster:
 
         # xs = [x for x in np.arange(0, x1, 0.1)]
 
-        xs = [x for x in np.arange(0, self.pos_x, 0.5)]
-        print(len(xs))
-        ys = []
-        for y in xs:
-            ys.append(a*y**2 + b*y + c)
+        xs = [x for x in np.arange(hero_pos[0], self.pos_x, 0.5)]
+        ys = [a * y ** 2 + b * y + c for y in xs]
+        path = tuple(zip(xs,ys))
+
+        return {'act':'atk', 'way':path, 'dmg':self.damage}
 
 
-        plt.plot(xs, ys)
-        plt.ylabel('parab')
-        plt.show()
-        # TODO: Send to client
-
+    def setup_opponent(self, dictionary):
+        self.enemy_pos = (dictionary['x'], dictionary['y'])
 
 # get_attack(1,1,77.1,22.6)
 
@@ -183,5 +181,5 @@ class Monster:
 
         line = [(self.pos_x-0.2, self.pos_y), (self.pos_x, self.pos_y-0.2)]
 
-        # TODO: Send to client
-        return line
+        self.shield = line
+        return {'act':'prt'}
