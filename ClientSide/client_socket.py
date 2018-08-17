@@ -14,15 +14,10 @@ class Connection:
 
 	def send_message(self, content):
 		buf = json.dumps(content)
-		self.socket.send(buf.encode('utf8'))
-		result = self.receive_message()
-		return result.decode('utf-8')
-		
+		self.socket.send(buf.encode('utf-8'))
+
 	def register(self):
-		if self.game_type == 'solo':
-			pass
-		else:
-			self.send_message({'type': self.game_type})
+		self.send_message({'type': self.game_type})
 
 	def close(self):
 		self.socket.close()

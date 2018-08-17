@@ -33,7 +33,8 @@ class User:
 def handler(clientsocket, clientaddr):
   print("Accepted connection from: {}".format(clientaddr))
   data = clientsocket.recv(size)
-  data = json.loads(data)
+  stroka = str(data, 'utf-8')
+  data = json.loads(stroka)
 
   print(type(data))
   print(data)
@@ -55,13 +56,13 @@ def start_game(user1, user2):
     if (not user1.registered):
       response += registration
       user1.registered = True
-    s1.send(response)
+    s1.send(response.encode('utf-8'))
     response = s1.recv(size)
 
     if (not user2.registered):
       response = registration + '\n###\n' + response
       user2.registered = True
-    s2.send(response)
+    s2.send(response.encode('utf-8'))
     response = s2.recv(size)
 
 def multiple_players():
@@ -78,8 +79,10 @@ def solo_player(socket):
   registration = {'act':'intro', 'msg':"You will be playing against AI monster.\nMake your action.\n" + monster.introduce_yourself(),
                   'x':monster.pos_x, 'y':monster.pos_y}
   response = ''
+  socket.send(json.dumps(registration).encode('utf-8'))
   intro = socket.recv(size)
-  monster.setup_opponent(intro)
+  monster.setup_opponent(json.loads(str(intro, 'utf-8')))
+  user.registered = True
 
   #Monster User interaction loop
   while True:
@@ -87,9 +90,10 @@ def solo_player(socket):
       response += json.dumps(registration)
       user.registered = True
 
-    socket.send(response)
+    socket.send(response.encode('utf-8'))
     response = socket.recv(size)
-    response = json.dumps(monster.get_player_turn(json.loads(response)))
+    time.sleep(1)
+    response = json.dumps(monster.get_player_turn(json.loads(str(response, 'utf-8'))))
     time.sleep(1)
 
 thread.start_new_thread(multiple_players, ())

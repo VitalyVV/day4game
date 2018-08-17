@@ -12,8 +12,8 @@ class Hero:
         self.shield = ()
         self.conn = Connection()
         self._enabled = True
-        self._send({'act':'intr', 'x':self.pos_x, 'y':self.pos_y})
-        self._receive()
+
+
 
     def attack(self, func, attack_type):
         """
@@ -167,6 +167,10 @@ class Hero:
             enemy = 'monster'
         else:
             enemy = 'other hero'
+        if actions['act'] == 'intro':
+            print(actions['msg'])
+            self._send({'act': 'intro', 'x': self.pos_x, 'y': self.pos_y})
+            return actions
 
         if actions['act'] == 'atk':
             self.apply_attack(actions['way'], actions['dmg'])

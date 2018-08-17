@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import random as rd
 import numpy as np
 import math
@@ -34,8 +33,8 @@ class Monster:
             self.hp += rd.randint(1, 3000)
 
     def introduce_yourself(self):
-        print(f'Monster known as {self.name}. It stands at {(self.pos_x, self.pos_y)}.\nIt\'s hp is {self.hp}.')
-        print(f'Deals {self.damage} damage per hit.\n')
+        return (f'Monster known as {self.name}. It stands at {(self.pos_x, self.pos_y)}.\nIt\'s hp is {self.hp}.'
+                f'Deals {self.damage} damage per hit.\n')
 
     def die(self):
         def _gen_prize():
@@ -143,7 +142,7 @@ class Monster:
             return a,b,c
 
         def _get_middle_point(x, y, hero_pos):
-            if rd.uniform()>= 0.2:
+            if rd.random()>= 0.2:
                 return (x + hero_pos[0]) / 2, y
             else:
                 return (x + hero_pos[0]) / 2, hero_pos[1]

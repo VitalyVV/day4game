@@ -3,6 +3,8 @@ from ClientSide.hero import Hero
 
 class MyHero(Hero):
     def run(self):
+        description = self._receive()
+
         while(self._enabled):
             #Write your code here
 
